@@ -50,6 +50,7 @@ const PaginationTable = ({ }) => {
   const handlePerRowsChange = (perPage, page) => {
     setLoading(true);
     setPage(page);
+    setPerPage(perPage);
 
     getDataApi((page-1)* perPage, perPage, ({data}) => {
       setData(data);
