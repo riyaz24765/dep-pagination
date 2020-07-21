@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
+import { getDataApi } from '../dataSource';
 
 const columns = [
   {
@@ -23,37 +24,37 @@ const PaginationTable = ({ }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [perPage, setPerPage] = useState(10);
+  const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      setData([{
-        first_name: 'riyaz',
-        last_name: 'ahmed',
-        email: 'random@gmail.com'
-      }]);
-      setTotalRows(20)
-    }, 1000);
+
+    getDataApi(0, perPage, ({data, totalRow}) => {
+      setData(data);
+      setTotalRows(totalRow);
+      setLoading(false)
+    })
   }, []);
 
 
   const handlePageChange = page => {
     setLoading(true);
+    setPage(page);
 
-    setTimeout(() => {
-      setLoading(false);
-      setData([]);
-    }, 1000);
+    getDataApi((page-1) *perPage, perPage, ({data}) => {
+      setData(data);
+      setLoading(false)
+    })
   }
 
   const handlePerRowsChange = (perPage, page) => {
     setLoading(true);
+    setPage(page);
 
-    setTimeout(() => {
-      setLoading(false);
-      setData([]);
-    }, 1000);
+    getDataApi((page-1)* perPage, perPage, ({data}) => {
+      setData(data);
+      setLoading(false)
+    })
   }
 
   return (
